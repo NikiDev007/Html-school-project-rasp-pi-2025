@@ -4,7 +4,7 @@
 <head>
     <tittle>Erweitertes Pi-Dashboard</tittle>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
@@ -41,7 +41,7 @@
 
     <p id="status-message" style="margin-top: 30px;">Wird geladen...</p>
 
-    <script src="{{ url_for('static', filename='status.js')}}"></script>
+    <script src="{{ url_for('static', filename='status.js') }}"></script>
 </body>
 
 </html>
