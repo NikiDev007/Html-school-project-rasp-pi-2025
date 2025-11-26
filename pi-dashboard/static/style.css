@@ -1,75 +1,109 @@
+/* style.css - Neues, modernes Design */
+
 body {
-    font-family: 'arial', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 20px;
     text-align: center;
-    background-color: #f4f4f9;
+    background-color: #e9eef2;
+    /* Sehr heller, kühler Hintergrund */
     color: #333;
+    line-height: 1.6;
 }
 
 h1 {
     color: #007bff;
-    margin-bottom: 30px;
-
+    margin-bottom: 40px;
+    font-size: 2.2em;
 }
 
+/* Container, der Flexbox verwendet, um die Boxen anzuordnen */
 .data-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 25px;
+    /* Abstand zwischen den Boxen */
+    margin-bottom: 30px;
 }
 
+/* Die Boxen selbst - Sauberes, schwebendes Design */
 .data-box {
     background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 280px;
-    transition: transform 0.3s ease;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    /* Starker Schatten */
+    padding: 25px;
+    width: 300px;
+    /* Einheitliche Breite */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    /* Layout für Inhalt (damit Balken und Text zentriert sind) */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .data-box:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    /* Leichtes Anheben beim Hover */
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
 }
 
 h2 {
-    font-size: 1.1em;
+    font-size: 1.2em;
     color: #555;
     margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 5px;
+    width: 100%;
+    /* Hält die Linie über die ganze Breite */
 }
 
 .value {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #007bff;
+    font-size: 3em;
+    font-weight: 600;
+    color: #3f51b5;
+    /* Tiefes Blau */
     display: block;
-    margin: 10px 0;
+    margin: 10px 0 20px 0;
 }
 
+/* --- Fortschrittsbalken-Styling --- */
+
 .bar-container {
-    background: #e9ecef;
-    height: 15px;
-    border-radius: 8px;
+    background: #e0e0e0;
+    height: 10px;
+    border-radius: 5px;
     margin-top: 10px;
+    width: 100%;
+    /* Wichtig: Nimmt die volle Breite des data-box-Paddings ein */
     overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
-    background: #28a745;
-    transition: width 0.5s ease-in-out;
+    transition: width 0.6s ease;
 }
 
+/* Spezifische Farben */
 .ram-bar {
-    background: #ffc107;
+    background: #ff9800;
+    /* Orange */
 }
 
 .disk-bar {
-    background: #17a2b8;
+    background: #00bcd4;
+    /* Türkis */
 }
 
+/* Meldungsbereich */
 #status-message {
+    margin-top: 40px;
     font-style: italic;
     color: #6c757d;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
