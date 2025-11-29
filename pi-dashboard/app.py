@@ -28,9 +28,9 @@ def parse_disk_usage(df_output):
         return 0, 0, 0
     root_line = [line for line in lines if line.endswith('/')]
     if root_line:
-        parts = root_live[0].split()
+        parts = root_line[0].split()
         if len(parts) >= 5:
-            usage_percent = int(parts[4].rplace('%', ''))
+            usage_percent = int(parts[4].replace('%', ''))
             total = parts[1]
             used = parts[2]
             return usage_percent, total, used
