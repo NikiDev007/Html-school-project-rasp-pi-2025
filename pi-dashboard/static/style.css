@@ -1,6 +1,52 @@
-/* style.css - Neues, modernes Design */
+/*
+ * ZUSAMMENGEFÜHRTE STYLES
+ * Basierend auf styles.css (modernes Design) mit Ergänzungen aus style.css
+ */
+
+/* ================= HEADER & NAVIGATION ================= */
+
+header {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 15px 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.NavBar {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    margin: 0 auto 30px auto;
+    max-width: 600px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.NavBar a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 600;
+    padding: 5px 15px;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 1.1em;
+}
+
+.NavBar a:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    color: #0056b3;
+}
+
+/* ================= GLOBALE & LAYOUT STILE ================= */
 
 body {
+    /* Übernommen aus styles.css (moderneres Design) */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 20px;
     text-align: center;
@@ -11,13 +57,16 @@ body {
 }
 
 h1 {
+    /* Übernommen aus styles.css */
     color: #007bff;
     margin-bottom: 40px;
+    /* Leicht vergrößerter Abstand */
     font-size: 2.2em;
 }
 
-/* Container, der Flexbox verwendet, um die Boxen anzuordnen */
+/* Der äußere Container, der die Boxen hält */
 .data-container {
+    /* Übernommen aus styles.css */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -26,30 +75,30 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* Die Boxen selbst - Sauberes, schwebendes Design */
+/* Die Boxen selbst */
 .data-box {
+    /* Übernommen aus styles.css (moderner) */
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    /* Starker Schatten */
     padding: 25px;
     width: 300px;
-    /* Einheitliche Breite */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-    /* Layout für Inhalt (damit Balken und Text zentriert sind) */
+    /* Layout für Inhalt */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .data-box:hover {
+    /* Übernommen aus styles.css */
     transform: translateY(-8px);
-    /* Leichtes Anheben beim Hover */
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
 }
 
 h2 {
+    /* Übernommen aus styles.css */
     font-size: 1.2em;
     color: #555;
     margin-top: 0;
@@ -57,53 +106,76 @@ h2 {
     border-bottom: 2px solid #f0f0f0;
     padding-bottom: 5px;
     width: 100%;
-    /* Hält die Linie über die ganze Breite */
 }
 
+/* ================= ZUSÄTZLICHE ELEMENTE ================= */
+
+/* Nur in style.css */
 .value {
-    font-size: 3em;
-    font-weight: 600;
-    color: #3f51b5;
-    /* Tiefes Blau */
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #007bff;
     display: block;
-    margin: 10px 0 20px 0;
+    margin: 10px 0;
 }
 
-/* --- Fortschrittsbalken-Styling --- */
-
+/* Nur in style.css - Fortschrittsbalken */
 .bar-container {
-    background: #e0e0e0;
-    height: 10px;
-    border-radius: 5px;
+    background: #e9ecef;
+    height: 15px;
+    border-radius: 8px;
     margin-top: 10px;
-    width: 100%;
-    /* Wichtig: Nimmt die volle Breite des data-box-Paddings ein */
     overflow: hidden;
+    width: 100%;
+    /* Sicherstellen, dass der Container die volle Boxenbreite nutzt */
 }
 
 .progress-bar {
     height: 100%;
-    transition: width 0.6s ease;
+    background: #28a745;
+    transition: width 0.5s ease-in-out;
 }
 
-/* Spezifische Farben */
 .ram-bar {
-    background: #ff9800;
-    /* Orange */
+    background: #ffc107;
 }
 
 .disk-bar {
-    background: #00bcd4;
-    /* Türkis */
+    background: #17a2b8;
 }
 
-/* Meldungsbereich */
+/* Nur in style.css */
 #status-message {
-    margin-top: 40px;
     font-style: italic;
     color: #6c757d;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Nur in styles.css - Für allgemeine Inhaltssektionen außerhalb der data-boxen */
+.main-content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content-section {
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    flex: 1 1 300px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.content-section:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
