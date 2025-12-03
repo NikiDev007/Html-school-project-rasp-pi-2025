@@ -37,7 +37,22 @@ def parse_disk_usage(df_output):
     return 0, "N/A", "N/A"
 
 
+@app.route('/logs')
+def view_logs():
+    try:
+        command = ['tail', '-n', '100', '/var/log/syslog']
+        result = subprocess.run(
+            command, capture_output=True, text=True, check=True)
+        log_content = result.stdout
+    except subprocess.CalledProcessError as e:
+        log_content = f"Fehler beim Abrufen der Logs: {e.stderr}"
+    except FileNotFoundError:
+        log_content = "Der 'tail'-Befehl wurde nicht gefunden oder die Log-Datei existiert nicht."
+    return render_template('logs.html', log_content=log_content)
+
 # app.py: NUR DIESE FUNKTION ÄNDERN!
+
+
 @app.route('/api/status')
 def status_api():
 
