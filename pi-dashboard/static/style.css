@@ -199,3 +199,39 @@ pre {
     /* Monospace-Schriftart */
     font-size: 0.9em;
 }
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.action-link {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 15px 0 0 0;
+    border-radius: 6px;
+    background-color: #007bff;
+    /* Hintergrundfarbe für Button-Look */
+    color: #ffffff !important;
+    /* Textfarbe auf Weiß setzen */
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.action-link:hover {
+    background-color: #0056b3;
+    /* Dunklere Farbe beim Hover */
+    transform: translateY(-2px);
+    /* Leichtes Anheben */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    /* Keine Unterstreichung, da es wie ein Button aussieht */
+}

@@ -8,16 +8,15 @@
 </head>
 
 <body>
-    <header>
-        <div class="main-content-wrapper">
-            <div class="content-section">
-                <h2>Inhalt von /var/log/syslog</h2>
-                <div class="log-container">
-                    <pre>{{ log_content }}</pre>
-                </div>
-                <p><a href="{{ url_for('index') }}">Zurück zum Anfang</a></p>
+    <div class="main-content-wrapper">
+        <div class="content-section">
+            <h2>Inhalt von /var/log/syslog</h2>
+            <div class="log-container">
+                <pre>{{ log_content }}</pre>
             </div>
+            <p><a href="{{ url_for('index') }}" class="action-link">Zurück zum Anfang</a></p>
         </div>
+    </div>
 </body>
 
 </html>
