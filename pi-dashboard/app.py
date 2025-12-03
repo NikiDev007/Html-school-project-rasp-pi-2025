@@ -50,24 +50,30 @@ def view_logs():
         log_content = "Der 'tail'-Befehl wurde nicht gefunden oder die Log-Datei existiert nicht."
     return render_template('logs.html', log_content=log_content)
 
-# app.py: NUR DIESE FUNKTION ÄNDERN!
-
 
 @app.route('/api/status')
 def status_api():
 
-    # *** SIMULIERTE DATEN FÜR LOKALEN WINDOWS-TEST ***
-    # WICHTIG: Wenn du auf den Raspberry Pi wechselst, musst du wieder
-    # den Original-Code mit den subprocess.run() Befehlen einfügen!
+    temp_raw = get_system_info(
+        ['cat', '/sys/class/thermal/thermal_zone0/temp'])
+    cpu_temp = round(int(temp_raw) / 1000, 1) if temp_raw.isdigit() else "N/A"
+
+    uptime = get_system_info(['uptime', '-p'])
+
+    free_output = get_system_info(['free', '-m'])
+    ram_percent = parse_ram_usage(ram_output)
+
+    disk_output = get_system_info(['df', '-h'])
+    disk_percent, disk_total, disk_used = parse_disk_usage(disk_output)
 
     return jsonify({
-        "temperature": 45.5,                 # Feste Temperatur
-        "uptime": "up 3 hours, 14 minutes",  # Feste Laufzeit
-        "ram_percent": 35.0,                 # RAM-Auslastung in %
-        "disk_percent": 15,                  # Festplattenauslastung in %
-        "disk_total": "250G",                # Simulierte Festplattengröße
-        "disk_used": "37G",                  # Simulierte Nutzung
-        "message": "Daten simuliert (Lokaler Test)"
+        "temperature": cpu_temp,
+        "uptime": uptime,
+        "ram_percent": ram_percent,
+        "disk_percent": disk_percent,
+        "disk_total": disk_total,
+        "disk_used": disk_used,
+        "message": "Daten erfolgreich abgerufen"
     })
 
 
