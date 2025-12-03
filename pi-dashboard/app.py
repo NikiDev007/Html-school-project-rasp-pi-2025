@@ -61,7 +61,7 @@ def status_api():
     uptime = get_system_info(['uptime', '-p'])
 
     free_output = get_system_info(['free', '-m'])
-    ram_percent = parse_ram_usage(ram_output)
+    ram_percent = parse_ram_usage(free_output)
 
     disk_output = get_system_info(['df', '-h'])
     disk_percent, disk_total, disk_used = parse_disk_usage(disk_output)
