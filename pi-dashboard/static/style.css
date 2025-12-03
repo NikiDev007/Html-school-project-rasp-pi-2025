@@ -179,3 +179,23 @@ h2 {
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.log-container {
+    background-color: #1e1e1e;
+    color: #00ff00;
+    /* Neon-grüne Textfarbe */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+    overflow-x: auto;
+    /* Erlaubt horizontales Scrollen bei langen Zeilen */
+}
+
+pre {
+    margin: 0;
+    white-space: pre;
+    /* Behält Leerzeichen und Zeilenumbrüche bei */
+    font-family: 'Consolas', 'Courier New', monospace;
+    /* Monospace-Schriftart */
+    font-size: 0.9em;
+}

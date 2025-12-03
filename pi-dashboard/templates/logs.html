@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>System Logs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="main-content-wrapper">
+            <div class="content-saection">
+                <h2>Inhalt con /var/log/syslog</h2>
+                <div class="log-container">
+                    <pre>{{ log_content }}</pre>
+                </div>
+                <p><a href="{{ url_for('index') }}">Zurück zum Anfang</a></p>
+            </div>
+        </div>
+</body>
+
+</html>
