@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Idea how I want to call it yet!</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>I dont know what to put here yet!</header>
+    <div class="NavBar">
+        <a href="{{ url_for('index') }}">Startseite</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('view_logs') }}">Logs</a>
+        <a href="{{ url_for('network_info') }}">Netzwerk Übersicht</a>
+    </div>
+    <div class="main-content-wrapper">
+
+        <div class="content-section" id="home">
+            <h2>Welcome to my website!</h2>
+            <p>This is a placeholder for future content.</p>
+        </div>
+
+        <div class="content-section" id="dashboard">
+            <h2>Dashboard</h2>
+            <p>
+                <a href="{{ url_for('dashboard') }}">Zum Dashboard</a>
+            </p>
+        </div>
+
+        <div class="content-section" id="logs">
+            <h2>Logs</h2>
+            <p>
+                <a href="{{ url_for('view_logs') }}">Zu System Logs</a>
+            </p>
+        </div>
+        
+        <div class="content-section" id="network">
+            <h2>Netzwerk</h2>
+            <p>
+                <a href="{{ url_for('network_info') }}">Zur Netzwerk Übersicht</a>
+            </p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 No Idea how I want to call it yet!</p>
+</body>
+
+</html>
