@@ -235,3 +235,26 @@ a:hover {
     text-decoration: none;
     /* Keine Unterstreichung, da es wie ein Button aussieht */
 }
+     
+.network-value {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #007bff;
+    display: block;
+    margin: 10px 0;
+    word-break: break-all; /* Lange IPs brechen um */
+}
+        
+.dns-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+}
+        
+.dns-list li {
+    background-color: #f0f8ff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-family: monospace;
+}
