@@ -8,7 +8,15 @@
 </head>
 
 <body>
-    <h1>System Logs</h1>
+    <header>System Logs</header>
+
+    <div class="NavBar">
+        <a href="{{ url_for('index') }}">Startseite</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('view_logs') }}">Logs</a>
+        <a href="{{ url_for('network_info') }}">Netzwerk Übersicht</a>
+    </div>
+    
     <div class="main-content-wrapper">
         <div class="content-section" style="max-width: 1200px; flex: 1 1 100%;">
             <h2>Inhalt von /var/log/syslog</h2>

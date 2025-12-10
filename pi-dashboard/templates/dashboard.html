@@ -8,7 +8,14 @@
 </head>
 
 <body>
-    <h1>Pi-Status-Dashboard</h1>
+    <header>Pi-Status-Dashboard</header>
+
+    <div class="NavBar">
+        <a href="{{ url_for('index') }}">Startseite</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('view_logs') }}">Logs</a>
+        <a href="{{ url_for('network_info') }}">Netzwerk Übersicht</a>
+    </div>
 
     <div class="data-container">
         <div class="data-box">
