@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netzwerk-Übersicht</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <header>
         Netzwerk- und Konfigurationsübersicht
@@ -19,7 +21,7 @@
     </div>
 
     <div class="main-content-wrapper">
-        <div class="content-section" style="max-width: 1200px; flex: 1 1 100%;">
+        <div style="max-width: 1200px; flex: 1 1 100%;">
             <div class="data-container">
 
                 <!-- Interne IP -->
@@ -35,20 +37,20 @@
                     <div class="network-value">{{ details.external_ip }}</div>
                     <small>Die öffentliche Adresse deines Routers (von außen sichtbar).</small>
                 </div>
-                
+
                 <!-- Gateway -->
                 <div class="data-box">
                     <h3>Gateway (Router)</h3>
                     <div class="network-value">{{ details.gateway }}</div>
                     <small>Die Adresse deines Standard-Routers.</small>
                 </div>
-                
+
                 <!-- DNS-Server -->
                 <div class="data-box">
                     <h3>DNS-Server</h3>
                     <ul class="dns-list">
                         {% for dns in details.dns_servers %}
-                            <li>{{ dns }}</li>
+                        <li>{{ dns }}</li>
                         {% endfor %}
                     </ul>
                     <small>Server zur Auflösung von Domainnamen (z.B. Google DNS).</small>
@@ -57,8 +59,9 @@
             </div>
         </div>
         <p>
-            <a href="{{ url_for('index') }}"class="action-link">Zurück zum Anfang</a>
+            <a href="{{ url_for('index') }}" class="action-link">Zurück zum Anfang</a>
         </p>
     </div>
 </body>
+
 </html>
