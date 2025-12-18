@@ -236,6 +236,15 @@ a:hover {
     /* Keine Unterstreichung, da es wie ein Button aussieht */
 }
 
+.info-link {
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.info-link:hover {
+    text-decoration: none;
+    /* Keine Unterstreichung, da es wie ein Button aussieht */
+}
+
 .network-value {
     font-size: 1.4em;
     font-weight: bold;

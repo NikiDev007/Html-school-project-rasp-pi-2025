@@ -2,8 +2,12 @@ import psutil
 from flask import Flask, jsonify, render_template
 import platform
 import time
+import sqlite3
+import threading
 
 app = Flask(__name__)
+
+DATABASE = 'system_metrics.db'
 
 def get_external_ip():
     if platform.system() != 'Linux':
@@ -64,7 +68,70 @@ def get_network_details():
             "dns_servers": ["Fehler beim Abruf"],
             "external_ip": get_external_ip()
         }
+    
+# Datenbank
 
+def init_db():
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS metrics (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            cpu_usage REAL,
+            ram_usage REAL,
+            cpu_temp REAL
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+def collect_data_loop():
+    while True:
+        try:
+            # 1. Daten lesen
+            cpu = psutil.cpu_percent(interval=1)
+            ram = psutil.virtual_memory().percent
+            
+            # Temperatur (Pi-spezifisch)
+            temps = psutil.sensors_temperatures()
+            temp = temps['cpu_thermal'][0].current if 'cpu_thermal' in temps else 0
+            
+            # 2. In DB schreiben
+            conn = sqlite3.connect(DATABASE)
+            cursor = conn.cursor()
+            cursor.execute('INSERT INTO metrics (cpu_usage, ram_usage, cpu_temp) VALUES (?, ?, ?)', 
+                           (cpu, ram, temp))
+            conn.commit()
+            conn.close()
+            
+            print(f"Messung gespeichert: CPU {cpu}%, RAM {ram}%")
+        except Exception as e:
+            print(f"Fehler beim Sammeln: {e}")
+            
+        time.sleep(30)
+
+init_db()
+threading.Thread(target=collect_data_loop, daemon=True).start()
+
+# Routen
+
+@app.route('/api/chart-data')
+def chart_data():
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('SELECT timestamp, cpu_usage, ram_usage, cpu_temp FROM metrics ORDER BY id DESC LIMIT 20')
+    rows = cursor.fetchall()
+    conn.close()
+
+    rows.reverse()
+
+    return jsonify({
+        "labels": [row[0].split()[1] for row in rows],
+        "cpu": [row[1] for row in rows],
+        "ram": [row[2] for row in rows],
+        "temp": [row[3] for row in rows]
+    }) 
 
 @app.route('/logs')
 def view_logs():
@@ -94,15 +161,17 @@ def status_api():
     if platform.system() != 'Linux':
         current_time = int(time.time())
         temp_sim = 45.0 + (current_time % 10) * 0.1
+        cpu_sim = 20.0 + (current_time % 50) / 5
         ram_sim = 30.0 + (current_time % 20) / 2
 
         return jsonify({
             "temperature": round(temp_sim, 1),
-            "uptime": "up 3 hours, 14 minutes",
+            "cpu_percent": round(cpu_sim, 1),
             "ram_percent": round(ram_sim, 1),
             "disk_percent": 15,
             "disk_total": "250G",
             "disk_used": "37G",
+            "uptime": "up 3 hours, 14 minutes",
             "message": "Daten simuliert (Lokaler Test)"
         })
 
@@ -115,6 +184,9 @@ def status_api():
             cpu_temp = round(temp_list[0].current, 1) if temp_list else "N/A"
         else:
              cpu_temp = "N/A (Sensoren nicht verfügbar)"
+        
+        # 1.1 CPU-Auslastung (psutil.cpu_percent())
+        cpu_percent = round(psutil.cpu_percent(interval=1), 1)
 
         # 2. Uptime (sekunden --> formatierte Ausgabe)
         uptime_seconds = time.time() - psutil.boot_time()
@@ -145,11 +217,12 @@ def status_api():
 
         return jsonify({
             "temperature": cpu_temp,
-            "uptime": uptime_str,
+            "cpu_percent": cpu_percent,
             "ram_percent": ram_percent,
             "disk_percent": disk_percent,
             "disk_total": disk_total,
             "disk_used": disk_used,
+            "uptime": uptime_str,
             "message": "Daten erfolgreich abgerufen mit psutil"
         })
     except Exception as e:
@@ -167,6 +240,18 @@ def index():
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
+
+@app.route('/cpu-info')
+def cpu_info():
+    return render_template('cpu_info.html')
+
+@app.route('/cpu-temp-info')
+def cpu_temp_info():
+    return render_template('cpu_temp_info.html')
+
+@app.route('/ram-info')
+def ram_info():          
+    return render_template('ram_info.html')
 
 
 if __name__ == '__main__':
