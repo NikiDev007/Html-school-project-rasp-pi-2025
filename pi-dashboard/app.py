@@ -4,10 +4,12 @@ import platform
 import time
 import sqlite3
 import threading
+import random
 
 app = Flask(__name__)
 
 DATABASE = 'system_metrics.db'
+
 
 def get_external_ip():
     if platform.system() != 'Linux':
@@ -38,25 +40,25 @@ def get_network_details():
         internal_ip = "N/A"
         addrs = psutil.net_if_addrs()
         for interface, addresses in addrs.items():
-            if interface != 'lo': # 'lo' ist localhost/Loopback und wird ignoriert
+            if interface != 'lo':  # 'lo' ist localhost/Loopback und wird ignoriert
                 for addr in addresses:
-                    if addr.family == 2: # 2 bedeutet AF_INET (IPv4)
+                    if addr.family == 2:  # 2 bedeutet AF_INET (IPv4)
                         internal_ip = addr.address
                         break
                 if internal_ip != "N/A":
                     break
-        
+
         # psutil: DNS-Server und Gateway sind nicht direkt/einfach per psutil abrufbar.
         # Hier müssten wir entweder:
         # 1. Die alte subprocess-Logik beibehalten (für Linux-spezifische netzwerkdetails)
-        # 2. Oder die Details (z.B. DNS) simulieren. 
+        # 2. Oder die Details (z.B. DNS) simulieren.
         # Wir behalten hier die alten Werte als Fallback, da es keine direkte psutil-Alternative gibt.
-        
+
         return {
             "internal_ip": internal_ip,
             # Diese bleiben "N/A" oder müssten über externe Linux-Befehle (mit subprocess) geholt werden,
             # da psutil keinen direkten Zugriff auf DNS/Gateway-Routing-Tabellen bietet.
-            "gateway": "Komplex (psutil kann das nicht)", 
+            "gateway": "Komplex (psutil kann das nicht)",
             "dns_servers": ["Komplex (psutil kann das nicht)"],
             "external_ip": get_external_ip()
         }
@@ -68,8 +70,9 @@ def get_network_details():
             "dns_servers": ["Fehler beim Abruf"],
             "external_ip": get_external_ip()
         }
-    
+
 # Datenbank
+
 
 def init_db():
     conn = sqlite3.connect(DATABASE)
@@ -86,41 +89,48 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 def collect_data_loop():
     while True:
         try:
-            # 1. Daten lesen
-            cpu = psutil.cpu_percent(interval=1)
-            ram = psutil.virtual_memory().percent
-            
-            # Temperatur (Pi-spezifisch)
-            temps = psutil.sensors_temperatures()
-            temp = temps['cpu_thermal'][0].current if 'cpu_thermal' in temps else 0
-            
-            # 2. In DB schreiben
             conn = sqlite3.connect(DATABASE)
             cursor = conn.cursor()
-            cursor.execute('INSERT INTO metrics (cpu_usage, ram_usage, cpu_temp) VALUES (?, ?, ?)', 
-                           (cpu, ram, temp))
+
+            if platform.system() == "Linux":
+                cpu = psutil.cpu_percent(interval=1)
+                ram = psutil.virtual_memory().percent
+                temps = psutil.sensors_temperatures()
+                temp = temps['cpu_thermal'][0].current if 'cpu_thermal' in temps else 0
+            else:
+                # Simulation für PC (Windows/Mac)
+                cpu = random.uniform(15.0, 25.0)
+                ram = random.uniform(30.0, 40.0)
+                temp = random.uniform(40.0, 50.0)
+
+            # Speichern
+            cursor.execute('INSERT INTO metrics (cpu_usage, ram_usage, cpu_temp) VALUES (?, ?, ?)',
+                           (round(cpu, 1), round(ram, 1), round(temp, 1)))
+
+            # DB-Pflege: Nur die letzten 50 Einträge behalten, um Überfüllung/Doppler zu vermeiden
+            cursor.execute(
+                'DELETE FROM metrics WHERE id NOT IN (SELECT id FROM metrics ORDER BY id DESC LIMIT 50)')
+
             conn.commit()
             conn.close()
-            
-            print(f"Messung gespeichert: CPU {cpu}%, RAM {ram}%")
         except Exception as e:
-            print(f"Fehler beim Sammeln: {e}")
-            
-        time.sleep(30)
+            print(f"Fehler: {e}")
 
-init_db()
-threading.Thread(target=collect_data_loop, daemon=True).start()
+        time.sleep(10)
 
 # Routen
+
 
 @app.route('/api/chart-data')
 def chart_data():
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    cursor.execute('SELECT timestamp, cpu_usage, ram_usage, cpu_temp FROM metrics ORDER BY id DESC LIMIT 20')
+    cursor.execute(
+        'SELECT timestamp, cpu_usage, ram_usage, cpu_temp FROM metrics GROUP BY timestamp ORDER BY id DESC LIMIT 20')
     rows = cursor.fetchall()
     conn.close()
 
@@ -131,7 +141,8 @@ def chart_data():
         "cpu": [row[1] for row in rows],
         "ram": [row[2] for row in rows],
         "temp": [row[3] for row in rows]
-    }) 
+    })
+
 
 @app.route('/logs')
 def view_logs():
@@ -180,22 +191,23 @@ def status_api():
         # 1. Temperatur (psutil.sensors_temperatures() ist Linux/Pi-spezifisch)
         # Die Struktur kann variieren, 'cpu_thermal' ist typisch für Pi.
         if psutil.sensors_temperatures():
-            temp_list = psutil.sensors_temperatures().get('cpu_thermal', psutil.sensors_temperatures().get('coretemp'))
+            temp_list = psutil.sensors_temperatures().get(
+                'cpu_thermal', psutil.sensors_temperatures().get('coretemp'))
             cpu_temp = round(temp_list[0].current, 1) if temp_list else "N/A"
         else:
-             cpu_temp = "N/A (Sensoren nicht verfügbar)"
-        
+            cpu_temp = "N/A (Sensoren nicht verfügbar)"
+
         # 1.1 CPU-Auslastung (psutil.cpu_percent())
         cpu_percent = round(psutil.cpu_percent(interval=1), 1)
 
         # 2. Uptime (sekunden --> formatierte Ausgabe)
         uptime_seconds = time.time() - psutil.boot_time()
-        # Formatieren (z.B. in 'up 3 days, 14 hours') ist komplex, 
+        # Formatieren (z.B. in 'up 3 days, 14 hours') ist komplex,
         # wir geben Sekunden zurück oder formatieren es selbst:
         days = int(uptime_seconds // 86400)
         hours = int((uptime_seconds % 86400) // 3600)
         uptime_str = f"up {days} Tage, {hours} Stunden"
-        
+
         # 3. RAM-Nutzung (psutil.virtual_memory())
         ram_info = psutil.virtual_memory()
         ram_percent = round(ram_info.percent, 1)
@@ -203,15 +215,15 @@ def status_api():
         # 4. Festplattennutzung (psutil.disk_usage('/'))
         disk_info = psutil.disk_usage('/')
         disk_percent = disk_info.percent
-        
+
         # Formatierung für Total und Used: psutil gibt Bytes zurück, wir formatieren in GB/MB.
         def format_bytes(bytes_value):
             for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
                 if bytes_value < 1024.0:
                     return f"{bytes_value:.1f}{unit}"
                 bytes_value /= 1024.0
-            return f"{bytes_value:.1f}TB" # Für extrem große Platten
-        
+            return f"{bytes_value:.1f}TB"  # Für extrem große Platten
+
         disk_total = format_bytes(disk_info.total)
         disk_used = format_bytes(disk_info.used)
 
@@ -241,18 +253,27 @@ def index():
 def dashboard():
     return render_template('dashboard.html')
 
+
 @app.route('/cpu-info')
 def cpu_info():
     return render_template('cpu_info.html')
+
 
 @app.route('/cpu-temp-info')
 def cpu_temp_info():
     return render_template('cpu_temp_info.html')
 
+
 @app.route('/ram-info')
-def ram_info():          
+def ram_info():
     return render_template('ram_info.html')
 
 
 if __name__ == '__main__':
+    init_db()
+    import os
+    if os.environ.get('Werkzeug_Run_Main'):
+        data_thread = threading.Thread(target=collect_data_loop, daemon=True)
+        data_thread.start()
+
     app.run(host='0.0.0.0', port=5000, debug=True)
