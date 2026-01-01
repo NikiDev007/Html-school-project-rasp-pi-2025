@@ -6,12 +6,30 @@ Ein modernes, webbasiertes Monitoring-Dashboard für den Raspberry Pi. Dieses Pr
 
 ## 🏁 Schnellstart-Anleitung
 
-Um das Projekt ohne manuelle Konsolen-Eingaben zu testen, folgen Sie bitte diesen Schritten:
+Da das Projekt eine laufende Python-Umgebung benötigt, folgen Sie bitte dieser einfachen Anleitung, um das Dashboard auf Ihrem Rechner zu starten:
 
-1. **Vorbereitung:** Stellen Sie sicher, dass **Python** installiert ist.
-2. **Start:** Klicken Sie doppelt auf die Datei **`Start_Dashboard.bat`** in **`pi-dashboard`**.
-3. **Automatik:** Die Datei installiert fehlende Bibliotheken (`flask`, `psutil`), startet den Server und öffnet automatisch Ihren Browser auf `http://127.0.0.1:5000`.
-4. **Beenden:** Drücken Sie im Konsolenfenster **STRG + C** oder schließen Sie das Fenster.
+### Schritt 1: Das Projekt herunterladen
+1. Klicken Sie oben rechts auf der GitHub-Seite auf den grünen Button **"Code"**.
+2. Wählen Sie im Menü den Punkt **"Download ZIP"**.
+3. Speichern Sie die Datei und entpacken Sie den gesamten Inhalt in einen Ordner Ihrer Wahl.
+
+### Schritt 2: Vorbereitung
+Stellen Sie sicher, dass **Python** auf Ihrem System installiert ist. 
+*(Falls nicht vorhanden, kann es unter [python.org](https://www.python.org/) heruntergeladen werden).*
+
+### Schritt 3: Das Programm starten
+1. Öffnen Sie den entpackten Projektordner.
+2. Suchen Sie die Datei **`Start_Dashboard.bat`** im Ordner **`pi-dashboard`**. 
+3. **Doppelklicken** Sie auf diese Datei.
+
+### Schritt 4: Automatischer Ablauf
+Es öffnet sich ein schwarzes Konsolenfenster. Bitte warten Sie kurz, während das Skript:
+- Die benötigten Bibliotheken (`flask`, `psutil`) automatisch installiert.
+- Den Server im Hintergrund startet.
+- Nach ca. 3 Sekunden **automatisch Ihren Webbrowser** mit der Adresse `http://127.0.0.1:5000` öffnet.
+
+### Schritt 5: Beenden
+Um die Begutachtung zu beenden, schließen Sie einfach das Konsolenfenster oder drücken Sie darin die Tasten **STRG + C**.
 
 ---
 
