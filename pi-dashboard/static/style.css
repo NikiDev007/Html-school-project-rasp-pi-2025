@@ -108,6 +108,21 @@ h2 {
     width: 100%;
 }
 
+.stable-box {
+    /* Übernommen aus styles.css (moderner) */
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    /* Layout für Inhalt */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 /* ================= ZUSÄTZLICHE ELEMENTE ================= */
 
 /* Nur in style.css */
@@ -178,6 +193,19 @@ h2 {
     transform: translateY(-8px);
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stable-section {
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    flex: 1 1 300px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .log-container {

@@ -28,28 +28,28 @@
             <div class="data-container">
 
                 <!-- Interne IP -->
-                <div class="data-box">
+                <div class="stable-box">
                     <h3>Interne IP-Adresse</h3>
                     <div class="network-value">{{ details.internal_ip}}</div>
                     <small>Die Adresse in deinem lokalen Netzwerk.</small>
                 </div>
 
                 <!-- Externe IP -->
-                <div class="data-box">
+                <div class="stable-box">
                     <h3>Externe IP-Adresse</h3>
                     <div class="network-value">{{ details.external_ip }}</div>
                     <small>Die öffentliche Adresse deines Routers (von außen sichtbar).</small>
                 </div>
 
                 <!-- Gateway -->
-                <div class="data-box">
+                <div class="stable-box">
                     <h3>Gateway (Router)</h3>
                     <div class="network-value">{{ details.gateway }}</div>
                     <small>Die Adresse deines Standard-Routers.</small>
                 </div>
 
                 <!-- DNS-Server -->
-                <div class="data-box">
+                <div class="stable-box">
                     <h3>DNS-Server</h3>
                     <ul class="dns-list">
                         {% for dns in details.dns_servers %}
