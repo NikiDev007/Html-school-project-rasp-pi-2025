@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU Info</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>CPU Info</header>
+
+    <div class="NavBar">
+        <a href="{{ url_for('index') }}">Startseite</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('view_logs') }}">Logs</a>
+        <a href="{{ url_for('network_info') }}">Netzwerk Übersicht</a>
+    </div>
+
+    <div class="data-container">
+        <div class="stable-box" style="width: 100%; max-width: 800px; height: auto; min-height: 400px;">
+            <h2>CPU-Auslastung Verlauf (%)</h2>
+            <div style="width: 100%; flex-grow: 1; padding: 10px;">
+                <canvas id="cpuChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        let cpuChart;
+
+        async function updateChart() {
+            try {
+                const response = await fetch('/api/chart-data');
+                const data = await response.json();
+
+                if (!cpuChart) {
+                    const ctx = document.getElementById('cpuChart').getContext('2d');
+                    cpuChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'CPU Last',
+                                data: data.cpu,
+                                borderColor: '#28a745', // Dein Grün
+                                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                                fill: true,
+                                tension: 0.3,
+                                borderWidth: 3,
+                                pointRadius: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100, // Fix auf 100% für CPU
+                                    grid: { color: '#eee' },
+                                    ticks: { callback: value => value + ' %' }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: {
+                                        autoSkip: true,     // Verhindert doppelte/gequetschte Labels
+                                        maxTicksLimit: 10,  // Zeigt max. 10 Zeitstempel gleichzeitig
+                                        maxRotation: 45,    // Dreht den Text für bessere Lesbarkeit
+                                        minRotation: 45
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: { display: false }
+                            }
+                        }
+                    });
+                } else {
+                    cpuChart.data.labels = data.labels;
+                    cpuChart.data.datasets[0].data = data.cpu;
+                    cpuChart.update('none'); // Update ohne Ruckeln
+                }
+            } catch (error) {
+                console.error("Fehler beim Laden der CPU-Daten:", error);
+            }
+        }
+
+        updateChart();
+        setInterval(updateChart, 5000); 
+    </script>
+
+    <script src="{{ url_for('static', filename='status.js') }}"></script>
+    <p><a href="{{ url_for('dashboard') }}" class="action-link">Zurück zum Dashboard</a></p>
+</body>
+
+</html>
