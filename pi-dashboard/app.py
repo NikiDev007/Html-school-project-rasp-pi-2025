@@ -120,7 +120,7 @@ def collect_data_loop():
         except Exception as e:
             print(f"Fehler: {e}")
 
-        time.sleep(10)
+        time.sleep(5)
 
 # Routen
 
