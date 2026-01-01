@@ -1,8 +1,3 @@
-/*
- * ZUSAMMENGEFÜHRTE STYLES
- * Basierend auf styles.css (modernes Design) mit Ergänzungen aus style.css
- */
-
 /* ================= HEADER & NAVIGATION ================= */
 
 header {
@@ -14,6 +9,20 @@ header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(-25deg);
+    animation: shine-header 3s ease-in-out;
 }
 
 .NavBar {
@@ -26,6 +35,7 @@ header {
     display: flex;
     justify-content: center;
     gap: 30px;
+    animation: float 4s ease-in-out infinite;
 }
 
 .NavBar a {
@@ -46,59 +56,21 @@ header {
 /* ================= GLOBALE & LAYOUT STILE ================= */
 
 body {
-    /* Übernommen aus styles.css (moderneres Design) */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 20px;
     text-align: center;
     background-color: #e9eef2;
-    /* Sehr heller, kühler Hintergrund */
     color: #333;
     line-height: 1.6;
 }
 
 h1 {
-    /* Übernommen aus styles.css */
     color: #007bff;
     margin-bottom: 40px;
-    /* Leicht vergrößerter Abstand */
     font-size: 2.2em;
 }
 
-/* Der äußere Container, der die Boxen hält */
-.data-container {
-    /* Übernommen aus styles.css */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 25px;
-    /* Abstand zwischen den Boxen */
-    margin-bottom: 30px;
-}
-
-/* Die Boxen selbst */
-.data-box {
-    /* Übernommen aus styles.css (moderner) */
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    padding: 25px;
-    width: 300px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-    /* Layout für Inhalt */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.data-box:hover {
-    /* Übernommen aus styles.css */
-    transform: translateY(-8px);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
-}
-
 h2 {
-    /* Übernommen aus styles.css */
     font-size: 1.2em;
     color: #555;
     margin-top: 0;
@@ -108,64 +80,6 @@ h2 {
     width: 100%;
 }
 
-.stable-box {
-    /* Übernommen aus styles.css (moderner) */
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    padding: 25px;
-    width: 300px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-    /* Layout für Inhalt */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* ================= ZUSÄTZLICHE ELEMENTE ================= */
-
-/* Nur in style.css */
-.value {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #007bff;
-    display: block;
-    margin: 10px 0;
-}
-
-/* Nur in style.css - Fortschrittsbalken */
-.bar-container {
-    background: #e9ecef;
-    height: 15px;
-    border-radius: 8px;
-    margin-top: 10px;
-    overflow: hidden;
-    width: 100%;
-    /* Sicherstellen, dass der Container die volle Boxenbreite nutzt */
-}
-
-.progress-bar {
-    height: 100%;
-    background: #28a745;
-    transition: width 0.5s ease-in-out;
-}
-
-.ram-bar {
-    background: #ffc107;
-}
-
-.disk-bar {
-    background: #17a2b8;
-}
-
-/* Nur in style.css */
-#status-message {
-    font-style: italic;
-    color: #6c757d;
-}
-
-/* Nur in styles.css - Für allgemeine Inhaltssektionen außerhalb der data-boxen */
 .main-content-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -202,29 +116,119 @@ h2 {
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     flex: 1 1 300px;
     max-width: 350px;
+    animation: fadeInUp 0.6s ease-out;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 }
 
+.data-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.data-box {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.6s ease-out;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.data-box:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stable-box {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.6s ease-out;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ================= ZUSÄTZLICHE ELEMENTE ================= */
+
+.value {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #007bff;
+    display: block;
+    margin: 10px 0;
+}
+
+.bar-container {
+    background: #e9ecef;
+    height: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #28a745;
+    transition: width 0.5s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shine 3s infinite;
+}
+
+.ram-bar {
+    background: #ffc107;
+}
+
+.disk-bar {
+    background: #17a2b8;
+}
+
+#status-message {
+    font-style: italic;
+    color: #6c757d;
+}
+
 .log-container {
     background-color: #1e1e1e;
     color: #00ff00;
-    /* Neon-grüne Textfarbe */
     padding: 20px;
     border-radius: 8px;
     text-align: left;
     overflow-x: auto;
-    /* Erlaubt horizontales Scrollen bei langen Zeilen */
 }
 
 pre {
     margin: 0;
     white-space: pre;
-    /* Behält Leerzeichen und Zeilenumbrüche bei */
     font-family: 'Consolas', 'Courier New', monospace;
-    /* Monospace-Schriftart */
     font-size: 0.9em;
 }
 
@@ -246,9 +250,7 @@ a:hover {
     margin: 15px 0 0 0;
     border-radius: 6px;
     background-color: #007bff;
-    /* Hintergrundfarbe für Button-Look */
     color: #ffffff !important;
-    /* Textfarbe auf Weiß setzen */
     font-weight: bold;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
@@ -256,12 +258,9 @@ a:hover {
 
 .action-link:hover {
     background-color: #0056b3;
-    /* Dunklere Farbe beim Hover */
     transform: translateY(-2px);
-    /* Leichtes Anheben */
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
     text-decoration: none;
-    /* Keine Unterstreichung, da es wie ein Button aussieht */
 }
 
 .info-link {
@@ -270,7 +269,6 @@ a:hover {
 
 .info-link:hover {
     text-decoration: none;
-    /* Keine Unterstreichung, da es wie ein Button aussieht */
 }
 
 .network-value {
@@ -280,7 +278,6 @@ a:hover {
     display: block;
     margin: 10px 0;
     word-break: break-all;
-    /* Lange IPs brechen um */
 }
 
 .dns-list {
@@ -295,4 +292,62 @@ a:hover {
     border-radius: 4px;
     margin-bottom: 5px;
     font-family: monospace;
+}
+
+/* ================= Animationen ================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shine {
+    to {
+        left: 100%;
+    }
+}
+
+@keyframes shine-header {
+    0% {
+        left: -150%;
+    }
+
+    20% {
+        left: 150%;
+    }
+
+    100% {
+        left: 150%;
+    }
+}
+
+@keyframes expand {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
 }

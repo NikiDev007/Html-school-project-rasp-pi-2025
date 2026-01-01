@@ -25,8 +25,6 @@ def get_external_ip():
 
 
 def get_network_details():
-    # psutil ist plattformunabhängig, aber die Abfrage nach Gateway und DNS ist komplexer.
-    # Wir nutzen psutil für IPs, aber behalten die Simulation für Nicht-Linux.
     if platform.system() != 'Linux':
         return {
             "internal_ip": "192.168.1.99 (Simuliert)",
@@ -36,28 +34,19 @@ def get_network_details():
         }
 
     try:
-        # psutil: Interne IP-Adressen (Wählt die erste gefundene nicht-loopback IPv4-Adresse)
         internal_ip = "N/A"
         addrs = psutil.net_if_addrs()
         for interface, addresses in addrs.items():
-            if interface != 'lo':  # 'lo' ist localhost/Loopback und wird ignoriert
+            if interface != 'lo':
                 for addr in addresses:
-                    if addr.family == 2:  # 2 bedeutet AF_INET (IPv4)
+                    if addr.family == 2:
                         internal_ip = addr.address
                         break
                 if internal_ip != "N/A":
                     break
 
-        # psutil: DNS-Server und Gateway sind nicht direkt/einfach per psutil abrufbar.
-        # Hier müssten wir entweder:
-        # 1. Die alte subprocess-Logik beibehalten (für Linux-spezifische netzwerkdetails)
-        # 2. Oder die Details (z.B. DNS) simulieren.
-        # Wir behalten hier die alten Werte als Fallback, da es keine direkte psutil-Alternative gibt.
-
         return {
             "internal_ip": internal_ip,
-            # Diese bleiben "N/A" oder müssten über externe Linux-Befehle (mit subprocess) geholt werden,
-            # da psutil keinen direkten Zugriff auf DNS/Gateway-Routing-Tabellen bietet.
             "gateway": "Komplex (psutil kann das nicht)",
             "dns_servers": ["Komplex (psutil kann das nicht)"],
             "external_ip": get_external_ip()
@@ -146,7 +135,6 @@ def chart_data():
 
 @app.route('/logs')
 def view_logs():
-    # Logs (tail) muss subprocess behalten, da es eine direkte Interaktion mit der Shell ist
     import subprocess
     try:
         command = ['tail', '-n', '100', '/var/log/syslog']
@@ -168,7 +156,7 @@ def network_info():
 
 @app.route('/api/status')
 def status_api():
-    # --- Windows/Mac Simulation (bleibt unverändert) ---
+    # --- Windows/Mac Simulation ---
     if platform.system() != 'Linux':
         current_time = int(time.time())
         temp_sim = 45.0 + (current_time % 10) * 0.1
@@ -186,10 +174,9 @@ def status_api():
             "message": "Daten simuliert (Lokaler Test)"
         })
 
-    # --- ECHTE DATEN (NEU: psutil) ---
+    # --- ECHTE DATEN (mit psutil) ---
     try:
         # 1. Temperatur (psutil.sensors_temperatures() ist Linux/Pi-spezifisch)
-        # Die Struktur kann variieren, 'cpu_thermal' ist typisch für Pi.
         if psutil.sensors_temperatures():
             temp_list = psutil.sensors_temperatures().get(
                 'cpu_thermal', psutil.sensors_temperatures().get('coretemp'))
@@ -202,8 +189,7 @@ def status_api():
 
         # 2. Uptime (sekunden --> formatierte Ausgabe)
         uptime_seconds = time.time() - psutil.boot_time()
-        # Formatieren (z.B. in 'up 3 days, 14 hours') ist komplex,
-        # wir geben Sekunden zurück oder formatieren es selbst:
+        # Formatieren in Tage, Stunden
         days = int(uptime_seconds // 86400)
         hours = int((uptime_seconds % 86400) // 3600)
         uptime_str = f"up {days} Tage, {hours} Stunden"
@@ -222,7 +208,7 @@ def status_api():
                 if bytes_value < 1024.0:
                     return f"{bytes_value:.1f}{unit}"
                 bytes_value /= 1024.0
-            return f"{bytes_value:.1f}TB"  # Für extrem große Platten
+            return f"{bytes_value:.1f}TB"
 
         disk_total = format_bytes(disk_info.total)
         disk_used = format_bytes(disk_info.used)

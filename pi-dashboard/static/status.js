@@ -4,7 +4,7 @@ function fetchPiStatus() {
         .then(data => {
 
             document.getElementById('temp-value').textContent = data.temperature + ' °C';
-            
+
             document.getElementById('cpu-value').textContent = data.cpu_percent + '%';
 
             document.getElementById('cpu-bar').style.width = data.cpu_percent + '%';
