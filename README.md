@@ -50,3 +50,19 @@ Ein modernes, webbasiertes Monitoring-Dashboard für den Raspberry Pi. Dieses Pr
 │   ├── js/             # Frontend-Logik (status.js)
 │   └── favicon.ico     # Projekt-Icon
 └── templates/          # HTML-Templates (index, dashboard, logs, network)
+
+---
+
+## 🛠️ Ausführung (Windows)
+
+Um die Webseite und den Server ohne manuelle Terminal-Eingaben zu starten, habe ich eine Starter-Datei erstellt.
+
+### Nutzung der `START_DASHBOARD.bat`:
+1. Stellen Sie sicher, dass **Python** auf Ihrem System installiert ist.
+2. Klicken Sie doppelt auf die Datei **`START_DASHBOARD.bat`** im Hauptverzeichnis.
+3. Die Datei führt automatisch folgende Schritte aus:
+   - Sie prüft und installiert die benötigten Bibliotheken (`flask`, `psutil`).
+   - Sie öffnet automatisch Ihren Standard-Browser auf `http://127.0.0.1:5000`.
+   - Sie startet den Python-Backend-Server.
+
+*Hinweis: Falls das Fenster nach dem Start sofort schließt, stellen Sie bitte sicher, dass Python zum Systempfad (PATH) hinzugefügt wurde.*
