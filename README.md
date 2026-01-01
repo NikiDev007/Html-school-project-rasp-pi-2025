@@ -9,7 +9,7 @@ Ein modernes, webbasiertes Monitoring-Dashboard für den Raspberry Pi. Dieses Pr
 Um das Projekt ohne manuelle Konsolen-Eingaben zu testen, folgen Sie bitte diesen Schritten:
 
 1. **Vorbereitung:** Stellen Sie sicher, dass **Python** installiert ist.
-2. **Start:** Klicken Sie doppelt auf die Datei **`START_DASHBOARD.bat`** im Hauptordner.
+2. **Start:** Klicken Sie doppelt auf die Datei **`Schnellstart.Ink`** im Hauptordner.
 3. **Automatik:** Die Datei installiert fehlende Bibliotheken (`flask`, `psutil`), startet den Server und öffnet automatisch Ihren Browser auf `http://127.0.0.1:5000`.
 4. **Beenden:** Drücken Sie im Konsolenfenster **STRG + C** oder schließen Sie das Fenster.
 
