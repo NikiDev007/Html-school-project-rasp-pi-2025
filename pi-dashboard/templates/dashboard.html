@@ -18,7 +18,7 @@
         <a href="{{ url_for('index') }}">Startseite</a>
         <a href="{{ url_for('dashboard') }}">Dashboard</a>
         <a href="{{ url_for('view_logs') }}">Logs</a>
-        <a href="{{ url_for('network_info') }}">Netzwerk Übersicht</a>
+        <a href="{{ url_for('network_info') }}">Netzwerkübersicht</a>
     </div>
     <div class="main-content-wrapper">
         <div class="data-container">
@@ -49,14 +49,42 @@
                 </div>
             </a>
 
-            <div class="stable-box">
-                <h2>Festplatten-Speicher</h2>
-                <span class="value" id="disk-value">...</span>
-                <p><span id="disk-used">...</span> / <span id="disk-total"></span></p>
-                <div class="bar-container">
-                    <div class="progress-bar disk-bar" id="disk-bar" style="width: 0%"></div>
+            <a href="{{ url_for('storage_disc_info') }}" class="info-link">
+                <div class="data-box">
+                    <h2>Festplatten-Speicher</h2>
+                    <span class="value" id="disk-value">...</span>
+                    <script>
+                        async function updateDiskTile() {
+                            try {
+                                const response = await fetch('/api/storage_disc_info');
+                                const data = await response.json();
+
+
+                                const used = Object.values(data).reduce((a, b) => a + b, 0);
+                                const total = 250; // 
+                                const percent = Math.round((used / total) * 100);
+
+
+                                document.getElementById('disk-value').innerText = percent + '%';
+                                document.getElementById('disk-used').innerText = used + ' GB';
+                                document.getElementById('disk-total').innerText = total + ' GB';
+
+
+                                document.getElementById('disk-bar').style.width = percent + '%';
+
+                            } catch (error) {
+                                console.error("Daten konnten nicht geladen werden:", error);
+                            }
+                        }
+
+                        document.addEventListener('DOMContentLoaded', updateDiskTile);
+                    </script>
+                    <p><span id="disk-used">...</span> / <span id="disk-total"></span></p>
+                    <div class="bar-container">
+                        <div class="progress-bar disk-bar" id="disk-bar" style="width: 0%"></div>
+                    </div>
                 </div>
-            </div>
+            </a>
 
             <div class="stable-box">
                 <h2>System-Laufzeit</h2>

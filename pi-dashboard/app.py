@@ -14,7 +14,7 @@ DATABASE = 'system_metrics.db'
 def get_external_ip():
     if platform.system() != 'Linux':
         # Simulierter Wert für lokale Tests
-        return "84.142.XXX.XXX (Simuliert)"
+        return "84.142.XXX.XXX"
     try:
         import subprocess
         result = subprocess.run(['curl', '-s', 'ifconfig.me'],
@@ -27,9 +27,9 @@ def get_external_ip():
 def get_network_details():
     if platform.system() != 'Linux':
         return {
-            "internal_ip": "192.168.1.99 (Simuliert)",
-            "gateway": "192.168.1.1 (Simuliert)",
-            "dns_servers": ["8.8.8.8 (Simuliert)", "1.1.1.1 (Simuliert)", "192.168.1.1 (Simuliert)"],
+            "internal_ip": "192.168.1.99",
+            "gateway": "192.168.1.1",
+            "dns_servers": ["8.8.8.8", "1.1.1.1", "192.168.1.1"],
             "external_ip": get_external_ip()
         }
 
@@ -167,9 +167,6 @@ def status_api():
             "temperature": round(temp_sim, 1),
             "cpu_percent": round(cpu_sim, 1),
             "ram_percent": round(ram_sim, 1),
-            "disk_percent": 15,
-            "disk_total": "250G",
-            "disk_used": "37G",
             "uptime": "up 3 hours, 14 minutes",
             "message": "Daten simuliert (Lokaler Test)"
         })
@@ -217,9 +214,6 @@ def status_api():
             "temperature": cpu_temp,
             "cpu_percent": cpu_percent,
             "ram_percent": ram_percent,
-            "disk_percent": disk_percent,
-            "disk_total": disk_total,
-            "disk_used": disk_used,
             "uptime": uptime_str,
             "message": "Daten erfolgreich abgerufen mit psutil"
         })
@@ -253,6 +247,22 @@ def cpu_temp_info():
 @app.route('/ram-info')
 def ram_info():
     return render_template('ram_info.html')
+
+
+@app.route('/api/storage_disc_info')
+def storage_api_data():
+    stats = {
+        'Bilder': 25,
+        'Videos': 140,
+        'Dokumente': 12,
+        'Anderes': 38
+    }
+    return jsonify(stats)
+
+
+@app.route('/storage-info')
+def storage_disc_info():
+    return render_template('storage_disc_info.html')
 
 
 if __name__ == '__main__':

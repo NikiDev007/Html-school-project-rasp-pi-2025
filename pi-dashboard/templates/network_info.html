@@ -20,7 +20,7 @@
         <a href="{{ url_for('index') }}">Startseite</a>
         <a href="{{ url_for('dashboard') }}">Dashboard</a>
         <a href="{{ url_for('view_logs') }}">Logs</a>
-        <a href="{{ url_for('network_info') }}">Netzwerk Übersicht</a>
+        <a href="{{ url_for('network_info') }}">Netzwerkübersicht</a>
     </div>
 
     <div class="main-content-wrapper">
@@ -61,10 +61,13 @@
 
             </div>
         </div>
-        <p>
-            <a href="{{ url_for('index') }}" class="action-link">Zurück zum Anfang</a>
-        </p>
     </div>
+    <p>
+    <div class="status-message" style="margin-top: 30px;">Daten simuliert (Lokaler Test)</div>
+    </p>
+    <p>
+        <a href="{{ url_for('index') }}" class="action-link">Zurück zum Anfang</a>
+    </p>
 </body>
 
 </html>

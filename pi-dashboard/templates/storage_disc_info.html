@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage Info</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>Storage Info</header>
+
+    <div class="NavBar">
+        <a href="{{ url_for('index') }}">Startseite</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('view_logs') }}">Logs</a>
+        <a href="{{ url_for('network_info') }}">Netzwerkübersicht</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <div class="main-content-wrapper">
+        <div class="stable-box" style="width: 100%; max-width: 500px;">
+            <h2>Speicher-Zusammensetzung (GB)</h2>
+            <div style="width: 100%; padding: 10px;">
+                <canvas id="storagePieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function updateStorageChart() {
+            try {
+
+                const response = await fetch('/api/storage_disc_info');
+                const data = await response.json();
+
+                const ctxPie = document.getElementById('storagePieChart').getContext('2d');
+
+                if (window.myPieChart) {
+                    window.myPieChart.destroy();
+                }
+
+                window.myPieChart = new Chart(ctxPie, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(data),
+                        datasets: [{
+                            data: Object.values(data),
+                            backgroundColor: ['#007bff', '#28a745', '#ffc107', '#17a2b8'],
+                            hoverOffset: 15
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Fehler beim Laden:", error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', updateStorageChart);
+    </script>
+
+    <p>
+    <div class="status-message" style="margin-top: 30px;">Daten simuliert (Lokaler Test)</div>
+    </p>
+    <p><a href="{{ url_for('dashboard') }}" class="action-link">Zurück zum Dashboard</a></p>
+</body>
+
+</html>

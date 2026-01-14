@@ -13,10 +13,6 @@ function fetchPiStatus() {
 
             document.getElementById('ram-bar').style.width = data.ram_percent + '%';
 
-            document.getElementById('disk-value').textContent = data.disk_percent + '%';
-            document.getElementById('disk-bar').style.width = data.disk_percent + '%';
-            document.getElementById('disk-used').textContent = data.disk_used;
-            document.getElementById('disk-total').textContent = data.disk_total;
             document.getElementById('uptime-value').textContent = data.uptime;
 
             document.getElementById('status-message').textContent = data.message;
@@ -29,3 +25,20 @@ function fetchPiStatus() {
 
 fetchPiStatus();
 setInterval(fetchPiStatus, 5000);
+
+function fetchSimulatedDisk() {
+    fetch('/api/storage_disc_info')
+        .then(response => response.json())
+        .then(data => {
+            const used = Object.values(data).reduce((a, b) => a + b, 0);
+            const total = 250;
+            const percent = Math.round((used / total) * 100);
+
+            document.getElementById('disk-value').textContent = percent + '%';
+            document.getElementById('disk-bar').style.width = percent + '%';
+            document.getElementById('disk-used').textContent = used + ' GB';
+            document.getElementById('disk-total').textContent = total + ' GB';
+        });
+}
+
+fetchSimulatedDisk();
