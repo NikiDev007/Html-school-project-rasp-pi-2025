@@ -167,7 +167,7 @@ def status_api():
             "temperature": round(temp_sim, 1),
             "cpu_percent": round(cpu_sim, 1),
             "ram_percent": round(ram_sim, 1),
-            "uptime": "up 3 hours, 14 minutes",
+            "uptime": "3 hours, 14 minutes",
             "message": "Daten simuliert (Lokaler Test)"
         })
 
